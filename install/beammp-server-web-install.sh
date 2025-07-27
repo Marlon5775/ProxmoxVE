@@ -50,6 +50,8 @@ fi
 
 # --- ab hier: User-Teil ---
 ###__USERPART__
+# Log all output to /tmp/beammp-install.log
+exec > >(tee /tmp/beammp-install.log) 2>&1
 # Load helper functions and set STD if not set
 source <(curl -fsSL https://raw.githubusercontent.com/Marlon5775/ProxmoxVE/main/misc/install.func)
 
