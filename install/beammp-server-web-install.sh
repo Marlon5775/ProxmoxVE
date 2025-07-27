@@ -8,7 +8,7 @@ source <(curl -fsSL https://raw.githubusercontent.com/Marlon5775/ProxmoxVE/main/
 
 APP="beammp-server-web"
 
-# --- Automatisch als normaler Benutzer ausführen ---
+# --- Automatisch als normaler Benutzer ausführen, auch bei Pipe-Start ---
 BEAMMP_USER="beammp"
 if [ "$(whoami)" = "root" ]; then
   if ! id "$BEAMMP_USER" &>/dev/null; then
@@ -32,9 +32,17 @@ if [ "$(whoami)" = "root" ]; then
   chown -R "$BEAMMP_USER":"$BEAMMP_USER" /opt/beammp-web 2>/dev/null || true
   echo "$BEAMMP_USER ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/beammp
   chmod 440 /etc/sudoers.d/beammp
-  sudo -u "$BEAMMP_USER" -H bash "$0"
+  # Schreibe den User-Teil in eine temporäre Datei ab Marker
+  TMPUSER=/tmp/beammp-user-install-$$.sh
+  awk '/^###__USERPART__/{found=1;next} found' "$0" > "$TMPUSER"
+  chmod +x "$TMPUSER"
+  sudo -u "$BEAMMP_USER" -H bash "$TMPUSER"
+  rm -f "$TMPUSER"
   exit
 fi
+
+# --- ab hier: User-Teil ---
+###__USERPART__
 
 color
 catch_errors
