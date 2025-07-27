@@ -47,8 +47,14 @@ if [ "$(whoami)" = "root" ]; then
   exit
 fi
 
+
 # --- ab hier: User-Teil ---
 ###__USERPART__
+# Load helper functions and set STD if not set
+source <(curl -fsSL https://raw.githubusercontent.com/Marlon5775/ProxmoxVE/main/misc/install.func)
+if [ -z "$STD" ]; then
+  STD=""
+fi
 
 
 color
