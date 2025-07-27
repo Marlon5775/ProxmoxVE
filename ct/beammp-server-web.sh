@@ -5,7 +5,7 @@ source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxV
 # License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 # Source: https://beammp.com/ https://github.com/Zyphro3D/BeamMP-web
 
-APP="BeamMP Server + Web"
+APP="beammp-server-web"
 var_tags="${var_tags:-gaming}"
 var_cpu="${var_cpu:-2}"
 var_ram="${var_ram:-2048}"

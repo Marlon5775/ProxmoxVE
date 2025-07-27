@@ -5,7 +5,7 @@ source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxV
 # License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 # Source: https://beammp.com/
 
-APP="BeamMP Server + Web"
+APP="beammp-server-web"
 
 color
 catch_errors
@@ -110,12 +110,13 @@ for i in $(seq 1 "$INSTANCE_COUNT"); do
   INSTANCES_JSON+="      { \"name\": \"$INSTANCE_NAME\", \"port\": \"$INSTANCE_PORT\", \"root_beammp\": \"$ROOT_BEAMMP\" }"
 done
 
+USER_SYSTEM=$(whoami)
 # install_config.json schreiben
 cat > install_config.json <<EOF
 {
   "db_user": "$DB_USER",
   "db_pass": "$DB_PASS",
-  "user_system": "beammp",
+  "user_system": "$USER_SYSTEM",
   "lang": "$LANG",
   "ip": "$IP",
   "instances": [
