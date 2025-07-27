@@ -50,33 +50,36 @@ fi
 # --- ab hier: User-Teil ---
 ###__USERPART__
 
+
 color
 catch_errors
 
 msg_info "Installing dependencies for BeamMP Server(s)"
-$STD apt-get update
-$STD apt-get install -y curl wget unzip sudo liblua5.3-0
-mkdir -p /opt/beammp-servers
+sudo "$STD" apt-get update
+sudo "$STD" apt-get install -y curl wget unzip sudo liblua5.3-0
+sudo mkdir -p /opt/beammp-servers
 
 read -p "How many BeamMP servers do you want to install? (default: 1): " SERVER_COUNT
 SERVER_COUNT=${SERVER_COUNT:-1}
 
+
 for i in $(seq 1 "$SERVER_COUNT"); do
   SERVER_DIR="/opt/beammp-servers/server${i}"
-  mkdir -p "$SERVER_DIR"
+  sudo mkdir -p "$SERVER_DIR"
   msg_info "Downloading BeamMP Server $i"
   LATEST_URL=$(curl -s https://api.github.com/repos/BeamMP/BeamMP-Server/releases/latest | grep browser_download_url | grep debian.12 | grep x86_64 | cut -d '"' -f4 | head -n1)
-  wget -O "$SERVER_DIR/BeamMP-Server" "$LATEST_URL"
-  chmod +x "$SERVER_DIR/BeamMP-Server"
+  sudo wget -O "$SERVER_DIR/BeamMP-Server" "$LATEST_URL"
+  sudo chmod +x "$SERVER_DIR/BeamMP-Server"
   msg_ok "BeamMP Server $i downloaded"
   msg_info "Running BeamMP Server $i once to generate config"
-  (cd "$SERVER_DIR" && ./BeamMP-Server || true)
+  (cd "$SERVER_DIR" && sudo ./BeamMP-Server || true)
   msg_ok "Config generated for server $i"
 done
 
 
+
 msg_info "Installing dependencies for BeamMP-Web"
-$STD apt-get install -y apache2 mariadb-server php php-mysql php-curl php-xml php-mbstring python3 python3-venv python3-pip unzip curl git composer jq
+sudo "$STD" apt-get install -y apache2 mariadb-server php php-mysql php-curl php-xml php-mbstring python3 python3-venv python3-pip unzip curl git composer jq
 
 
 while true; do
@@ -153,7 +156,7 @@ for i in $(seq 1 "$INSTANCE_COUNT"); do
   INSTANCES_JSON+="      { \"name\": \"$INSTANCE_NAME\", \"port\": \"$INSTANCE_PORT\", \"root_beammp\": \"$ROOT_BEAMMP\" }"
 done
 
-USER_SYSTEM=$(whoami)
+USER_SYSTEM="beammp"
 # install_config.json schreiben
 cat > install_config.json <<EOF
 {
