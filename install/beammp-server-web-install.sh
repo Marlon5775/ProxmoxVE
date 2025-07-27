@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 source <(curl -fsSL https://raw.githubusercontent.com/Marlon5775/ProxmoxVE/main/misc/install.func)
 # Copyright (c) 2025 community-scripts ORG
@@ -6,6 +7,34 @@ source <(curl -fsSL https://raw.githubusercontent.com/Marlon5775/ProxmoxVE/main/
 # Source: https://beammp.com/
 
 APP="beammp-server-web"
+
+# --- Automatisch als normaler Benutzer ausführen ---
+BEAMMP_USER="beammp"
+if [ "$(whoami)" = "root" ]; then
+  if ! id "$BEAMMP_USER" &>/dev/null; then
+    while true; do
+      read -s -p "Passwort für Benutzer $BEAMMP_USER festlegen: " BEAMMP_PASS
+      echo
+      read -s -p "Passwort wiederholen: " BEAMMP_PASS2
+      echo
+      if [[ -z "$BEAMMP_PASS" ]]; then
+        echo "Passwort darf nicht leer sein."
+      elif [[ "$BEAMMP_PASS" != "$BEAMMP_PASS2" ]]; then
+        echo "Passwörter stimmen nicht überein."
+      else
+        break
+      fi
+    done
+    useradd -m -s /bin/bash "$BEAMMP_USER"
+    echo "$BEAMMP_USER:$BEAMMP_PASS" | chpasswd
+  fi
+  chown -R "$BEAMMP_USER":"$BEAMMP_USER" /opt/beammp-servers 2>/dev/null || true
+  chown -R "$BEAMMP_USER":"$BEAMMP_USER" /opt/beammp-web 2>/dev/null || true
+  echo "$BEAMMP_USER ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/beammp
+  chmod 440 /etc/sudoers.d/beammp
+  sudo -u "$BEAMMP_USER" -H bash "$0"
+  exit
+fi
 
 color
 catch_errors
