@@ -1,0 +1,34 @@
+{
+  "name": "BeamMP Server + Web",
+  "slug": "beammp-server-web",
+  "categories": [
+    24
+  ],
+  "date_created": "2025-07-27",
+  "type": "ct",
+  "updateable": false,
+  "privileged": false,
+  "interface_port": 8081,
+  "documentation": "https://github.com/Zyphro3D/BeamMP-web/blob/main/README.md",
+  "website": "https://docs.beammp.com/",
+  "logo": "https://avatars.githubusercontent.com/u/76395149?s=200&v=4",
+  "config_path": "",
+  "description": "BeamMP Server is a Multiplayer for BeamNG.drive. BeamMP-Web is a web-based control panel for managing BeamMP game servers. It provides an intuitive interface to start, stop, configure, and monitor servers easily.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/beammp.sh",
+      "resources": {
+        "cpu": 2,
+        "ram": 2048,
+        "hdd": 8,
+        "os": "debian",
+        "version": "12"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  }
+}
