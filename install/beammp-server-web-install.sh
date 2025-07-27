@@ -10,6 +10,12 @@ APP="beammp-server-web"
 
 # --- Automatisch als normaler Benutzer ausführen, auch bei Pipe-Start ---
 BEAMMP_USER="beammp"
+# Bestimme den Pfad zu diesem Skript
+if [ -n "$SCRIPT_PATH" ]; then
+  SELF="$SCRIPT_PATH"
+else
+  SELF="$0"
+fi
 if [ "$(whoami)" = "root" ]; then
   if ! id "$BEAMMP_USER" &>/dev/null; then
     while true; do
@@ -34,9 +40,9 @@ if [ "$(whoami)" = "root" ]; then
   chmod 440 /etc/sudoers.d/beammp
   # Schreibe den User-Teil in eine temporäre Datei ab Marker
   TMPUSER=/tmp/beammp-user-install-$$.sh
-  awk '/^###__USERPART__/{found=1;next} found' "$0" > "$TMPUSER"
+  awk '/^###__USERPART__/{found=1;next} found' "$SELF" > "$TMPUSER"
   chmod +x "$TMPUSER"
-  sudo -u "$BEAMMP_USER" -H bash "$TMPUSER"
+  sudo -u "$BEAMMP_USER" -H SCRIPT_PATH="$SELF" bash "$TMPUSER"
   rm -f "$TMPUSER"
   exit
 fi
