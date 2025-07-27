@@ -1,3 +1,6 @@
+# Initialisiere Variablen, um Bash-Fehler zu vermeiden
+RANDOM_UUID=""
+DIAGNOSTICS=""
 
 #!/usr/bin/env bash
 source <(curl -fsSL https://raw.githubusercontent.com/Marlon5775/ProxmoxVE/main/misc/install.func)
@@ -64,8 +67,17 @@ sudo DEBIAN_FRONTEND=noninteractive APT_LISTCHANGES_FRONTEND=none apt-get update
 sudo DEBIAN_FRONTEND=noninteractive APT_LISTCHANGES_FRONTEND=none apt-get install -y curl wget unzip sudo liblua5.3-0
 sudo mkdir -p /opt/beammp-servers
 
-read -p "How many BeamMP servers do you want to install? (default: 1): " SERVER_COUNT
-SERVER_COUNT=${SERVER_COUNT:-1}
+
+# Sichere Eingabe für die Anzahl der Server
+while true; do
+  read -p "How many BeamMP servers do you want to install? (default: 1): " SERVER_COUNT
+  SERVER_COUNT=${SERVER_COUNT:-1}
+  if [[ $SERVER_COUNT =~ ^[0-9]+$ ]] && [ "$SERVER_COUNT" -ge 1 ]; then
+    break
+  else
+    echo "Please enter a valid number (>=1)."
+  fi
+done
 
 
 for i in $(seq 1 "$SERVER_COUNT"); do
