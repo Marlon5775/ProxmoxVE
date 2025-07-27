@@ -52,17 +52,14 @@ fi
 ###__USERPART__
 # Load helper functions and set STD if not set
 source <(curl -fsSL https://raw.githubusercontent.com/Marlon5775/ProxmoxVE/main/misc/install.func)
-if [ -z "$STD" ]; then
-  STD=""
-fi
 
 
 color
 catch_errors
 
 msg_info "Installing dependencies for BeamMP Server(s)"
-sudo "$STD" apt-get update
-sudo "$STD" apt-get install -y curl wget unzip sudo liblua5.3-0
+sudo apt-get update
+sudo apt-get install -y curl wget unzip sudo liblua5.3-0
 sudo mkdir -p /opt/beammp-servers
 
 read -p "How many BeamMP servers do you want to install? (default: 1): " SERVER_COUNT
@@ -85,7 +82,7 @@ done
 
 
 msg_info "Installing dependencies for BeamMP-Web"
-sudo "$STD" apt-get install -y apache2 mariadb-server php php-mysql php-curl php-xml php-mbstring python3 python3-venv python3-pip unzip curl git composer jq
+sudo apt-get install -y apache2 mariadb-server php php-mysql php-curl php-xml php-mbstring python3 python3-venv python3-pip unzip curl git composer jq
 
 
 while true; do
