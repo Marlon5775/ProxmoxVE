@@ -24,8 +24,15 @@ start
 build_container
 description
 
-# Installationsskript in den Container kopieren und ausführen (SCRIPT_PATH setzen!)
-pct push "$CTID" "$(dirname "$0")/../install/beammp-server-web-install.sh" /etc/profile.d/beammp-server-web-install.sh
+# Installationsskript herunterladen und in den Container kopieren
+msg_info "Downloading install script"
+TEMP_SCRIPT="/tmp/beammp-server-web-install-$$.sh"
+curl -fsSL https://raw.githubusercontent.com/Marlon5775/ProxmoxVE/main/install/beammp-server-web-install.sh -o "$TEMP_SCRIPT"
+pct push "$CTID" "$TEMP_SCRIPT" /etc/profile.d/beammp-server-web-install.sh
+rm -f "$TEMP_SCRIPT"
+msg_ok "Install script copied to container"
+
+# Installationsskript im Container ausführen (SCRIPT_PATH setzen!)
 lxc-attach -n "$CTID" -- bash -c "SCRIPT_PATH=/etc/profile.d/beammp-server-web-install.sh bash /etc/profile.d/beammp-server-web-install.sh"
 
 msg_ok "Completed Successfully!\n"
