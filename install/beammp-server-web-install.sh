@@ -19,14 +19,14 @@ fi
 if [ "$(whoami)" = "root" ]; then
   if ! id "$BEAMMP_USER" &>/dev/null; then
     while true; do
-      read -s -p "Passwort für Benutzer $BEAMMP_USER festlegen: " BEAMMP_PASS
+      read -s -p "Set password for user $BEAMMP_USER: " BEAMMP_PASS
       echo
-      read -s -p "Passwort wiederholen: " BEAMMP_PASS2
+      read -s -p "Repeat password: " BEAMMP_PASS2
       echo
       if [[ -z "$BEAMMP_PASS" ]]; then
-        echo "Passwort darf nicht leer sein."
+        echo "Password must not be empty."
       elif [[ "$BEAMMP_PASS" != "$BEAMMP_PASS2" ]]; then
-        echo "Passwörter stimmen nicht überein."
+        echo "Passwords do not match."
       else
         break
       fi

@@ -24,8 +24,8 @@ start
 build_container
 description
 
-# Installationsskript im Container ausführen
-lxc-attach -n "$CTID" -- bash /etc/profile.d/beammp-server-web-install.sh
+# Installationsskript im Container ausführen (SCRIPT_PATH setzen!)
+lxc-attach -n "$CTID" -- bash -c "SCRIPT_PATH=/etc/profile.d/beammp-server-web-install.sh bash /etc/profile.d/beammp-server-web-install.sh"
 
 msg_ok "Completed Successfully!\n"
 echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
